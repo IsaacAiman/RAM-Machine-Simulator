@@ -13,6 +13,7 @@ public class Tape {
 	
 
 	public Tape(){
+		
 		Integer cero = new Integer(0);
 		tape = new ArrayList<Integer> (cero);
 		head = new Integer(0);
@@ -20,6 +21,7 @@ public class Tape {
 	
 
 	public Tape(String filename){
+		
 		Integer cero = new Integer(0);
 		tape = new ArrayList<Integer> (cero);
 		head = new Integer(0);
@@ -54,8 +56,6 @@ public class Tape {
 	
 	public void load(String filename){
 		
-		
-		
 		try {
 			Scanner scanner = new Scanner(new File(filename));
 			while (scanner.hasNext()){
@@ -68,10 +68,7 @@ public class Tape {
 		} 
 		catch (FileNotFoundException e) {
 		
-		}
-
-		
-		
+		}	
 	}
 	
 	public Integer read(){
@@ -87,30 +84,21 @@ public class Tape {
 		FileWriter filewriter = null;
 
 		try {
-			
 			filewriter = new FileWriter(filename);
 			buffer = new BufferedWriter(filewriter);
-			
 			
 			for (int i = 0; i<this.getTape().size(); i++){
 				buffer.write(this.getTape().get(i).toString() + " ");
 			}
-			
 			buffer.close();
-
-		} catch (IOException e) {
-
-			e.printStackTrace();
-
 		}
-		
-		
+		catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void add(Integer value){
 		
 		tape.add(value);
 	}
-	
-	
 }
