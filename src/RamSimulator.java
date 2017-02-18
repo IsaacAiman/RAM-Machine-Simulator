@@ -19,12 +19,13 @@ public class RamSimulator {
 	private static String outFilename;
 	private static ArrayList<Instruction> programMemory;
 	private static ArrayList<Integer> dataMemory;
+	private static Alu alu;
 
 	public static void main(String[] args) {
 		
 		tagList = new ArrayList<Tag>();
 		programMemory = new ArrayList<Instruction>();
-		dataMemory = new ArrayList<Integer>(0);
+		dataMemory = new ArrayList<Integer>();
 		ramProgram = args[0];
 		inFilename = args[1];
 		outFilename = args[2];
@@ -36,8 +37,9 @@ public class RamSimulator {
 		tapeOut.write(outFilename);
 		
 		loadProgram ();
-		
-
+		alu = new Alu(tapeIn, tapeOut, programMemory, dataMemory);
+		alu.start();		
+		System.out.println("Programa finalizado.");
 	}
 	
 	public static void loadProgram(){
@@ -49,13 +51,12 @@ public class RamSimulator {
 			while (scanner.hasNext()){
 				//int i = scanner.nextInt();
 				
-				
-				
 				String next = scanner.nextLine();
 				next = next.trim();
 				String [] array = next.split("\\s+");
-				if (next.startsWith("#")){
-					scanner.nextLine();
+				
+				if (next.startsWith("#") || next.isEmpty()){
+					
 				}
 				else{
 					
@@ -82,12 +83,12 @@ public class RamSimulator {
 					}
 					else{
 						
-						/* Mostrar por pantalla*/
+						/* Mostrar por pantalla
 						for (int i = 0; i<array.length; i++){
 							System.out.print(array[i] + " ");
 						}
 						System.out.println();
-						/*Fin*/
+						Fin*/
 						
 						switch (array.length){
 							case 1:
@@ -116,9 +117,7 @@ public class RamSimulator {
 		}
 	}
 	
-	
 	public static Integer getLine(String line){
-		
 		try{
 			Scanner scanner = new Scanner(new File(ramProgram));
 			Integer numberLine = 1;
