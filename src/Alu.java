@@ -50,22 +50,94 @@ public class Alu {
 			setIp(getIp() + 1);
 			switch(programMemory.get(getIp() - 1).getName().toLowerCase()){
 				case "read":
-					read(programMemory.get(getIp() - 1).getArgument());
+					try{
+						read(programMemory.get(getIp() - 1).getArgument());
+					}
+					catch(Exception e){
+						System.err.println(e + mensajeError());
+						System.exit(-1);
+					}
 					break;
 				case "load":
-					load(programMemory.get(getIp() - 1).getArgument());
+					try{
+						load(programMemory.get(getIp() - 1).getArgument());
+					}
+					catch(Exception e){
+						System.err.println(e + mensajeError());
+						System.exit(-1);
+					}
 					break;
 				case "store":
-					store(programMemory.get(getIp() - 1).getArgument());
+					try{
+						store(programMemory.get(getIp() - 1).getArgument());
+					}
+					catch(Exception e){
+						System.err.println(e + mensajeError());
+						System.exit(-1);
+					}
 					break;
 				case "jzero":
-					jzero(programMemory.get(getIp() - 1).getArgument());
+					try{
+						jzero(programMemory.get(getIp() - 1).getArgument());
+					}
+					catch(Exception e){
+						System.err.println(e + mensajeError());
+						System.exit(-1);
+					}
 					break;
 				case "write":
-					write(programMemory.get(getIp() - 1).getArgument());
+					try{
+						write(programMemory.get(getIp() - 1).getArgument());
+					}
+					catch(Exception e){
+						System.err.println(e + mensajeError());
+						System.exit(-1);
+					}		
+					break;
+				case "add":
+					try{
+						add(programMemory.get(getIp() - 1).getArgument());
+					}
+					catch(Exception e){
+						System.err.println(e + mensajeError());
+						System.exit(-1);
+					}
+					break;
+				case "sub":
+					try{
+						sub(programMemory.get(getIp() - 1).getArgument());
+					}
+					catch(Exception e){
+						System.err.println(e + mensajeError());
+						System.exit(-1);
+					}
+					break;
+				case "mul":
+					try{
+						mul(programMemory.get(getIp() - 1).getArgument());
+					}
+					catch(Exception e){
+						System.err.println(e + mensajeError());
+						System.exit(-1);
+					}
+					break;
+				case "div":
+					try{
+						div(programMemory.get(getIp() - 1).getArgument());
+					}
+					catch(Exception e){
+						System.err.println(e + mensajeError());
+						System.exit(-1);
+					}
 					break;
 				case "jump":
-					jump(programMemory.get(getIp() - 1).getArgument());
+					try{
+						jump(programMemory.get(getIp() - 1).getArgument());
+					}
+					catch(Exception e){
+						System.err.println(e + mensajeError());
+						System.exit(-1);
+					}
 					break;
 				case "halt":
 					boolHalt = true;
@@ -80,42 +152,55 @@ public class Alu {
 		}
 	}
 	
-	public void read(String argument){
-		try{
-			getDataMemory().add(getValue(argument), getTapeIn().read());
+	public void read(String argument) throws Exception{
+		
+		if(getType(argument).equals("Constante")){
+			throw new Exception("Error. Constante no permitida ");
 		}
-		catch (Exception e){
-			System.err.println(e + "en la instrucción: '" + programMemory.get(getIp() - 1).getName() + "' de la línea: " + programMemory.get(getIp() - 1).getLine() );
-			System.exit(-1);
-		}
+			
+		getDataMemory().add(getRegisterNumber(argument), getTapeIn().read());
+	
 	}
 	
-	public void load(String argument){
+	public void load(String argument) throws Exception{
 		
-		getDataMemory().add(0, getDataMemory().getValue(new Integer(argument)));
+		
+		getDataMemory().add(0, getValue(argument));
+		
+		
 	}
 	
-	public void jzero(String argument){
+	public void jzero(String argument) throws Exception{
 		
-		if (dataMemory.getValue(0).equals(new Integer(0))){
-			Boolean found = false;
+		Boolean found = true;
+		System.out.println("jzero");
+		System.out.println("jzero: " + getDataMemory().getValue(0));
+		if (getDataMemory().getValue(0).equals(new Integer(0))){
+			System.out.println("asdasd");
+			found = false;
 			for (int i = 0; i<tagList.size() && !found; i++){
-	
 				if(tagList.get(i).getTagName().startsWith(argument)){
 					found = true;
 					setIp(tagList.get(i).getInstructionNumber());
 				}
 			}
 		}
+		
+		if (!found){
+			throw new Exception("Etiqueta no encontrada ");
+		}
 	}
 	
-	public void write(String argument){
+	public void write(String argument) throws Exception{
 		
-		getTapeOut().add(getDataMemory().getValue(new Integer(argument)));
-		
+
+		getTapeOut().add(getValue(argument));
+
+
 	}
 	
-	public void jump(String argument){
+	public void jump(String argument) throws Exception{
+		
 		Boolean found = false;
 		for (int i = 0; i<tagList.size() && !found; i++){
 
@@ -124,21 +209,48 @@ public class Alu {
 				setIp(tagList.get(i).getInstructionNumber());
 			}
 		}
-	}
-	
-	public void store(String argument){
 		
-		getDataMemory().add(new Integer(argument), getDataMemory().getValue(0));
+		if (!found){
+			throw new Exception("Etiqueta no encontrada ");
+		}
+	}
+	
+	public void store(String argument) throws Exception{
+		
+		if(getType(argument).equals("Constante")){
+			throw new Exception("Error. Constante no permitida ");
+		}
+		
+		getDataMemory().add(getRegisterNumber(argument), getDataMemory().getValue(0));
+
 		
 	}
 	
-	public void add(String argument){
-		getDataMemory().add(new Integer(argument), getDataMemory().getValue(0));
+	public void add(String argument) throws Exception{
+		
+		getDataMemory().add(0, getDataMemory().getValue(0) + getValue(argument));
+	}
+	
+	public void sub(String argument) throws Exception{
+		
+		getDataMemory().add(0, getDataMemory().getValue(0) - getValue(argument));	
+		
+	}
+	
+	public void mul(String argument) throws Exception{
+		
+		getDataMemory().add(0, getDataMemory().getValue(0) * getValue(argument));	
+		
+	}
+	
+	public void div(String argument) throws Exception{
+		
+		getDataMemory().add(0, getDataMemory().getValue(0) / getValue(argument));	
+		
 	}
 	
 	
-	
-	public static Integer getValue(String argument) throws Exception{
+	public Integer getValue(String argument) throws Exception{
 		
 		if(argument.startsWith("=")){
 			try{
@@ -160,8 +272,36 @@ public class Alu {
 		 
 				}
 				
-				return new Integer(argument.replaceFirst("\\*", ""));
+				return getDataMemory().getValue(getDataMemory().getValue(
+						new Integer(argument.replaceFirst("\\*", ""))));
 			}
+		}
+		
+		try{
+			new Integer(argument);
+		}
+		catch(NumberFormatException e){
+			throw new Exception("Error de formato del operando ");
+ 
+		}
+		
+		return (getDataMemory().getValue(new Integer(argument)));
+		
+		
+	}
+
+	public Integer getRegisterNumber(String argument) throws Exception{
+
+		if(argument.startsWith("*")){
+			try{
+				new Integer(argument.replaceFirst("\\*", ""));
+			}
+			catch(NumberFormatException e){
+				throw new Exception("Error de formato del operando ");
+	 
+			}
+			
+			return getDataMemory().getValue(new Integer(argument.replaceFirst("\\*", "")));
 		}
 		
 		try{
@@ -175,9 +315,10 @@ public class Alu {
 		return (new Integer(argument));
 		
 		
+		
 	}
-
-	public static String getType(String argument){
+	
+	public String getType(String argument){
 		
 		if(argument.startsWith("=")){
 			return "Constante";
@@ -189,6 +330,7 @@ public class Alu {
 		
 		return "Direccionamiento directo";
 	}
+	
 	public Integer getIp() {
 		return ip;
 	}
@@ -237,4 +379,8 @@ public class Alu {
 		this.tagList = tagList;
 	}
 	
+	public String mensajeError(){
+		return (("en la instrucción: '" + programMemory.get(getIp() - 1).getName() +
+				"' de la línea: " + programMemory.get(getIp() - 1).getLine()));
+	}
 }

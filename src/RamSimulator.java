@@ -82,13 +82,6 @@ public class RamSimulator {
 					}
 					else{
 						
-						/* Mostrar por pantalla
-						for (int i = 0; i<array.length; i++){
-							System.out.print(array[i] + " ");
-						}
-						System.out.println();
-						Fin*/
-						
 						switch (array.length){
 							case 1:
 								programMemory.add(new Instruction(array[0], "", getLine(next)));
