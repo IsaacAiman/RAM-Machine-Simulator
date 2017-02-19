@@ -9,14 +9,13 @@ import java.util.Scanner;
 public class Tape {
 	
 	private ArrayList<Integer> tape;
-	private Integer head;
 	
 
 	public Tape(){
 		
 		Integer cero = new Integer(0);
 		tape = new ArrayList<Integer> (cero);
-		head = new Integer(0);
+
 	}
 	
 
@@ -24,7 +23,6 @@ public class Tape {
 		
 		Integer cero = new Integer(0);
 		tape = new ArrayList<Integer> (cero);
-		head = new Integer(0);
 		load(filename);
 		
 	}
@@ -33,7 +31,6 @@ public class Tape {
 		
 		Integer cero = new Integer(0);
 		tape = new ArrayList<Integer> (cero);
-		head = new Integer(0);
 		this.setTape(tape2.getTape());
 		
 	}
@@ -46,13 +43,6 @@ public class Tape {
 		this.tape = tape;
 	}
 	
-	public Integer getHead() {
-		return head;
-	}
-
-	public void setHead(Integer head) {
-		this.head = head;
-	}
 	
 	public void load(String filename){
 		
@@ -60,7 +50,6 @@ public class Tape {
 			Scanner scanner = new Scanner(new File(filename));
 			while (scanner.hasNext()){
 				int i = scanner.nextInt();
-				//this.getTape().add(Integer.valueOf(i));
 				this.add(Integer.valueOf(i));
 			}
 			scanner.close();
@@ -73,8 +62,11 @@ public class Tape {
 	
 	public Integer read(){
 		
-		head ++;
-		return getTape().get(head - 1);
+
+		Integer returnInteger = new Integer(getTape().get(0));
+		getTape().remove(0);
+		
+		return returnInteger;
 			
 	}
 	
@@ -100,5 +92,20 @@ public class Tape {
 	public void add(Integer value){
 		
 		tape.add(value);
+	}
+	
+	public String toString(){
+		
+		String returnString = new String();
+		for (int i = 0; i<getTape().size(); i++){
+			returnString += (getTape().get(i) + " ");
+		}
+		
+		if (getTape().isEmpty()){
+			return "(empty)";
+		}
+		
+		return returnString;
+		
 	}
 }

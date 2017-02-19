@@ -8,6 +8,8 @@ public class Alu {
 	private ProgramMemory programMemory;
 	private DataMemory dataMemory;
 	private ArrayList<Tag> tagList;
+	private Integer numberInstructionsExecuted;
+	private Boolean debug;
 	
 	public Alu(){
 
@@ -17,10 +19,11 @@ public class Alu {
 		programMemory = new ProgramMemory();
 		dataMemory = new DataMemory();
 		tagList = new ArrayList<Tag>();
+		debug = new Boolean(false); 
 		
 	}
 	
-	public Alu(Tape tapeIn, Tape tapeOut, ProgramMemory programMemory, DataMemory dataMemory, ArrayList<Tag> tagList){
+	public Alu(Tape tapeIn, Tape tapeOut, ProgramMemory programMemory, DataMemory dataMemory, ArrayList<Tag> tagList, Boolean debug){
 
 		ip = 0;
 		this.tapeIn = tapeIn;
@@ -28,6 +31,7 @@ public class Alu {
 		this.programMemory = programMemory;
 		this.dataMemory = dataMemory;
 		this.tagList = tagList;
+		this.debug = debug;
 		
 	}
 	
@@ -39,11 +43,14 @@ public class Alu {
 		this.programMemory = other.getProgramMemory();
 		this.dataMemory = other.getDataMemory();
 		this.tagList = other.getTagList();
+		this.debug = other.getDebug();
 		
 	}
 	
 	public void start() throws Exception{
-		Boolean boolHalt = false;		
+		
+		Boolean boolHalt = false;
+		numberInstructionsExecuted = new Integer(0);
 		
 		while(getIp()<programMemory.size() && !boolHalt) {
 			setIp(getIp() + 1);
@@ -142,6 +149,13 @@ public class Alu {
 				default:
 					throw new Exception("Error " + mensajeError());
 				}
+			
+			setNumberInstructionsExecuted(numberInstructionsExecuted + 1);
+			
+			if (debug){
+				debugMode();
+			}
+				
 			
 			
 		}
@@ -266,7 +280,6 @@ public class Alu {
 		}
 		
 	}
-	
 	
 	public Integer getValue(String argument) throws Exception{
 		if(argument.startsWith("=")){
@@ -399,4 +412,38 @@ public class Alu {
 		return (("en la instrucción: '" + programMemory.get(getIp() - 1).getName() +
 				"' de la línea: " + programMemory.get(getIp() - 1).getLine()));
 	}
+
+	
+	public Integer getNumberInstructionsExecuted() {
+		return numberInstructionsExecuted;
+	}
+
+	
+	public void setNumberInstructionsExecuted(Integer numberInstructionsExecuted) {
+		this.numberInstructionsExecuted = numberInstructionsExecuted;
+	}
+
+	
+	public Boolean getDebug() {
+		return debug;
+	}
+
+	
+	public void setDebug(Boolean debug) {
+		this.debug = debug;
+	}
+
+	public void debugMode(){
+		
+		System.out.println("=============================================");
+		System.out.println("Memoria de datos:" + "\n" + getDataMemory());
+		System.out.println("Memoria de programa:" + "\n" + getProgramMemory());
+		System.out.println("IP: " + getIp());
+		System.out.println("Cinta de entrada: " + getTapeIn());
+		System.out.println("Cinta de salida: " + getTapeOut());
+		System.out.println("Número de instrucciones ejecutadas: " + getNumberInstructionsExecuted());
+		System.out.println("=============================================\n\n");
+
+	}
+
 }

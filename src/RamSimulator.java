@@ -20,6 +20,7 @@ public class RamSimulator {
 	private static ProgramMemory programMemory;
 	private static DataMemory dataMemory;
 	private static Alu alu;
+	private static Boolean debug;
 
 	public static void main(String[] args) {
 		
@@ -32,10 +33,16 @@ public class RamSimulator {
 		tapeIn = new Tape(inFilename);
 		tapeOut = new Tape();
 
+		if (new Integer(args[3]).equals(0)){
+			debug = false;
+		}
+		else{
+			debug = true;
+		}
 		
 		try{
 			loadProgram();
-			alu = new Alu(tapeIn, tapeOut, programMemory, dataMemory, tagList);
+			alu = new Alu(tapeIn, tapeOut, programMemory, dataMemory, tagList, debug);
 			alu.start();
 		}
 		catch (Exception e){
@@ -44,6 +51,7 @@ public class RamSimulator {
 			System.exit(-1);
 		}
 		tapeOut.write(outFilename);
+		System.out.println("Número de instrucciones ejecutadas: " + alu.getNumberInstructionsExecuted());
 		System.out.println("Programa finalizado.");
 	}
 	
@@ -98,6 +106,7 @@ public class RamSimulator {
 					}
 					
 					instructionNumber++;
+					
 				}
 			}
 			scanner.close();

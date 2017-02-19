@@ -40,4 +40,19 @@ public class ProgramMemory {
 	public Integer size(){
 		return getProgramMemory().size();
 	}
+	
+	public String toString(){
+		
+		String returnString = new String();
+		
+		for (int i = 0; i<getProgramMemory().size(); i++){
+	
+			returnString += (getProgramMemory().get(i).getName() + " " 
+						+ getProgramMemory().get(i).getArgument() + "\n");
+		}
+		
+		return returnString;
+		
+	}
+
 }

@@ -59,4 +59,18 @@ public class DataMemory {
 		return null;
 		
 	}
+
+	public String toString(){
+		
+		String returnString = new String();
+		
+		for (int i = 0; i<getDataMemory().size(); i++){
+	
+			returnString += "R" + getDataMemory().get(i).getPosition() + " " 
+								+ getDataMemory().get(i).getValue() + "\n";
+		}
+		
+		return returnString;
+		
+	}
 }
