@@ -68,10 +68,10 @@ public class RamSimulator {
 								tapeOut.write(outFilename);
 								break;
 							case 2:
-								programMemory.add(new Instruction(array[1], ""));
+								programMemory.add(new Instruction(array[1], "", getLine(next)));
 								break;
 							case 3:
-								programMemory.add(new Instruction(array[1], array[2]));
+								programMemory.add(new Instruction(array[1], array[2], getLine(next)));
 								break;
 			
 							default:
@@ -91,10 +91,10 @@ public class RamSimulator {
 						
 						switch (array.length){
 							case 1:
-								programMemory.add(new Instruction(array[0], ""));
+								programMemory.add(new Instruction(array[0], "", getLine(next)));
 								break;
 							case 2:
-								programMemory.add(new Instruction(array[0], array[1]));
+								programMemory.add(new Instruction(array[0], array[1], getLine(next)));
 								break;
 							default:
 								System.out.println("Error en la instrucción: " + array[1] + ". Línea: " + getLine(next));

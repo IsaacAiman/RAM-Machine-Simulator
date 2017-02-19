@@ -31,7 +31,6 @@ public class DataMemory {
 	
 	public void add(Integer position, Integer value){
 		
-		
 		Boolean found = false;
 		for (int i = 0; i<getDataMemory().size() && !found; i++){
 			if (getDataMemory().get(i).getPosition().equals(position)){

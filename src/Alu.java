@@ -55,6 +55,9 @@ public class Alu {
 				case "load":
 					load(programMemory.get(getIp() - 1).getArgument());
 					break;
+				case "store":
+					store(programMemory.get(getIp() - 1).getArgument());
+					break;
 				case "jzero":
 					jzero(programMemory.get(getIp() - 1).getArgument());
 					break;
@@ -67,6 +70,10 @@ public class Alu {
 				case "halt":
 					boolHalt = true;
 					break;
+				default:
+					System.out.println("Instrucción inválida");
+					boolHalt = true;
+					break;
 				}
 			
 			
@@ -74,9 +81,13 @@ public class Alu {
 	}
 	
 	public void read(String argument){
-	
-		getDataMemory().add(new Integer(argument), getTapeIn().read());
-		
+		try{
+			getDataMemory().add(getValue(argument), getTapeIn().read());
+		}
+		catch (Exception e){
+			System.err.println(e + "en la instrucción: '" + programMemory.get(getIp() - 1).getName() + "' de la línea: " + programMemory.get(getIp() - 1).getLine() );
+			System.exit(-1);
+		}
 	}
 	
 	public void load(String argument){
@@ -115,7 +126,69 @@ public class Alu {
 		}
 	}
 	
+	public void store(String argument){
+		
+		getDataMemory().add(new Integer(argument), getDataMemory().getValue(0));
+		
+	}
+	
+	public void add(String argument){
+		getDataMemory().add(new Integer(argument), getDataMemory().getValue(0));
+	}
+	
+	
+	
+	public static Integer getValue(String argument) throws Exception{
+		
+		if(argument.startsWith("=")){
+			try{
+				new Integer(argument.replaceFirst("=", ""));
+			}
+			catch(NumberFormatException e){
+				throw new Exception("Error de formato del operando ");
+	 
+			}
+			return new Integer(argument.replaceFirst("=", ""));
+		}
+		else{
+			if(argument.startsWith("*")){
+				try{
+					new Integer(argument.replaceFirst("\\*", ""));
+				}
+				catch(NumberFormatException e){
+					throw new Exception("Error de formato del operando ");
+		 
+				}
+				
+				return new Integer(argument.replaceFirst("\\*", ""));
+			}
+		}
+		
+		try{
+			new Integer(argument);
+		}
+		catch(NumberFormatException e){
+			throw new Exception("Error de formato del operando ");
+ 
+		}
+		
+		return (new Integer(argument));
+		
+		
+	}
 
+	public static String getType(String argument){
+		
+		if(argument.startsWith("=")){
+			return "Constante";
+		}
+		
+		if(argument.startsWith("*")){
+			return "Direccionamiento indirecto";
+		}
+		
+		return "Direccionamiento directo";
+	}
 	public Integer getIp() {
 		return ip;
 	}
