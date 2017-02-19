@@ -5,26 +5,29 @@ public class Alu {
 	private Integer ip;
 	private Tape tapeIn;
 	private Tape tapeOut;
-	private ArrayList<Instruction> programMemory;
-	private ArrayList<Integer> dataMemory;
+	private ProgramMemory programMemory;
+	private DataMemory dataMemory;
+	private ArrayList<Tag> tagList;
 	
 	public Alu(){
 
 		ip = 0;
 		tapeIn = new Tape();
 		tapeOut = new Tape();
-		programMemory = new ArrayList<Instruction>();
-		dataMemory = new ArrayList<Integer>();
+		programMemory = new ProgramMemory();
+		dataMemory = new DataMemory();
+		tagList = new ArrayList<Tag>();
 		
 	}
 	
-	public Alu(Tape tapeIn, Tape tapeOut, ArrayList<Instruction> programMemory, ArrayList<Integer> dataMemory){
+	public Alu(Tape tapeIn, Tape tapeOut, ProgramMemory programMemory, DataMemory dataMemory, ArrayList<Tag> tagList){
 
 		ip = 0;
 		this.tapeIn = tapeIn;
 		this.tapeOut = tapeOut;
 		this.programMemory = programMemory;
 		this.dataMemory = dataMemory;
+		this.tagList = tagList;
 		
 	}
 	
@@ -35,13 +38,15 @@ public class Alu {
 		this.tapeOut = other.getTapeOut();
 		this.programMemory = other.getProgramMemory();
 		this.dataMemory = other.getDataMemory();
+		this.tagList = other.getTagList();
 		
 	}
 	
 	public void start(){
-		Boolean boolHalt = false;
+		Boolean boolHalt = false;		
+		
 		while(getIp()<programMemory.size() && !boolHalt) {
-			
+			System.out.println(getIp());
 			setIp(getIp() + 1);
 			switch(programMemory.get(getIp() - 1).getName().toLowerCase()){
 				case "read":
@@ -69,29 +74,45 @@ public class Alu {
 	}
 	
 	public void read(String argument){
-		System.out.println(getDataMemory().size());
-		//getDataMemory().add(new Integer(argument), getTapeIn().read());
+	
+		getDataMemory().add(new Integer(argument), getTapeIn().read());
 		
 	}
 	
 	public void load(String argument){
-		System.out.println(getDataMemory().size());
-		//getDataMemory().add(1, new Integer(argument));
+		
+		getDataMemory().add(0, getDataMemory().getValue(new Integer(argument)));
 	}
 	
 	public void jzero(String argument){
 		
-		
-		
+		if (dataMemory.getValue(0).equals(new Integer(0))){
+			Boolean found = false;
+			for (int i = 0; i<tagList.size() && !found; i++){
+	
+				if(tagList.get(i).getTagName().startsWith(argument)){
+					found = true;
+					setIp(tagList.get(i).getInstructionNumber());
+				}
+			}
+		}
 	}
 	
 	public void write(String argument){
 		
+		getTapeOut().add(getDataMemory().getValue(new Integer(argument)));
+		
 	}
 	
-	public Integer jump(String argument){
-		
-		return -1;
+	public void jump(String argument){
+		Boolean found = false;
+		for (int i = 0; i<tagList.size() && !found; i++){
+
+			if(tagList.get(i).getTagName().startsWith(argument)){
+				found = true;
+				setIp(tagList.get(i).getInstructionNumber());
+			}
+		}
 	}
 	
 
@@ -119,20 +140,28 @@ public class Alu {
 		this.tapeOut = tapeOut;
 	}
 
-	public ArrayList<Instruction> getProgramMemory() {
+	public ProgramMemory getProgramMemory() {
 		return programMemory;
 	}
 
-	public void setProgramMemory(ArrayList<Instruction> programMemory) {
+	public void setProgramMemory(ProgramMemory programMemory) {
 		this.programMemory = programMemory;
 	}
 
-	public ArrayList<Integer> getDataMemory() {
+	public DataMemory getDataMemory() {
 		return dataMemory;
 	}
 
-	public void setDataMemory(ArrayList<Integer> dataMemory) {
+	public void setDataMemory(DataMemory dataMemory) {
 		this.dataMemory = dataMemory;
+	}
+
+	public ArrayList<Tag> getTagList() {
+		return tagList;
+	}
+
+	public void setTagList(ArrayList<Tag> tagList) {
+		this.tagList = tagList;
 	}
 	
 }

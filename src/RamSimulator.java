@@ -17,28 +17,27 @@ public class RamSimulator {
 	private static String ramProgram;
 	private static String inFilename;
 	private static String outFilename;
-	private static ArrayList<Instruction> programMemory;
-	private static ArrayList<Integer> dataMemory;
+	private static ProgramMemory programMemory;
+	private static DataMemory dataMemory;
 	private static Alu alu;
 
 	public static void main(String[] args) {
 		
 		tagList = new ArrayList<Tag>();
-		programMemory = new ArrayList<Instruction>();
-		dataMemory = new ArrayList<Integer>();
+		programMemory = new ProgramMemory();
+		dataMemory = new DataMemory();
 		ramProgram = args[0];
 		inFilename = args[1];
 		outFilename = args[2];
 		tapeIn = new Tape(inFilename);
 		tapeOut = new Tape();
 		
-		
-		tapeOut.setTape(tapeIn.getTape()); 
-		tapeOut.write(outFilename);
+		 
 		
 		loadProgram ();
-		alu = new Alu(tapeIn, tapeOut, programMemory, dataMemory);
-		alu.start();		
+		alu = new Alu(tapeIn, tapeOut, programMemory, dataMemory, tagList);
+		alu.start();
+		tapeOut.write(outFilename);
 		System.out.println("Programa finalizado.");
 	}
 	
