@@ -130,6 +130,15 @@ public class Alu {
 						System.exit(-1);
 					}
 					break;
+				case "jgtz":
+					try{
+						jgtz(programMemory.get(getIp() - 1).getArgument());
+					}
+					catch(Exception e){
+						System.err.println(e + mensajeError());
+						System.exit(-1);
+					}
+					break;
 				case "jump":
 					try{
 						jump(programMemory.get(getIp() - 1).getArgument());
@@ -157,9 +166,10 @@ public class Alu {
 		if(getType(argument).equals("Constante")){
 			throw new Exception("Error. Constante no permitida ");
 		}
-			
+		
+		System.out.println("GOLA");
 		getDataMemory().add(getRegisterNumber(argument), getTapeIn().read());
-	
+		System.out.println("HOLA");
 	}
 	
 	public void load(String argument) throws Exception{
@@ -173,10 +183,7 @@ public class Alu {
 	public void jzero(String argument) throws Exception{
 		
 		Boolean found = true;
-		System.out.println("jzero");
-		System.out.println("jzero: " + getDataMemory().getValue(0));
 		if (getDataMemory().getValue(0).equals(new Integer(0))){
-			System.out.println("asdasd");
 			found = false;
 			for (int i = 0; i<tagList.size() && !found; i++){
 				if(tagList.get(i).getTagName().startsWith(argument)){
@@ -193,7 +200,16 @@ public class Alu {
 	
 	public void write(String argument) throws Exception{
 		
+		System.out.println("Argument:" + argument);
+		if(!getType(argument).equals("Constante")){
+			
+			if (getRegisterNumber(argument).equals(0)){
+				throw new Exception("Intentando escribir en R0 ");
+			}
+			
+		}
 
+		
 		getTapeOut().add(getValue(argument));
 
 
@@ -249,9 +265,28 @@ public class Alu {
 		
 	}
 	
+	public void jgtz(String argument) throws Exception{
+		
+		Boolean found = true;
+		if (getDataMemory().getValue(0).intValue() > 0){
+			found = false;
+			for (int i = 0; i<tagList.size() && !found; i++){
+				if(tagList.get(i).getTagName().startsWith(argument)){
+					found = true;
+					setIp(tagList.get(i).getInstructionNumber());
+				}
+			}
+		}
+		
+		if (!found){
+			throw new Exception("Etiqueta no encontrada ");
+		}
+		
+	}
+	
 	
 	public Integer getValue(String argument) throws Exception{
-		
+		System.out.println("GetValue: " + argument);
 		if(argument.startsWith("=")){
 			try{
 				new Integer(argument.replaceFirst("=", ""));
@@ -311,7 +346,6 @@ public class Alu {
 			throw new Exception("Error de formato del operando ");
  
 		}
-		
 		return (new Integer(argument));
 		
 		

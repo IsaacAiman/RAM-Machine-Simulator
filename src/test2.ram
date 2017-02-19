@@ -1,4 +1,4 @@
-# Programa que reconoce el lenguaje formado por las 
+# Programa que reconoce el lenguaje formado por las
 # palabras que tienen el mismo n�mero de 1 y 2.
 # Las palabras finalizan con el n�mero 0.
 # Los �nicos s�mbolos posibles de entrada son 0, 1 y 2.
