@@ -42,11 +42,10 @@ public class Alu {
 		
 	}
 	
-	public void start(){
+	public void start() throws Exception{
 		Boolean boolHalt = false;		
 		
 		while(getIp()<programMemory.size() && !boolHalt) {
-			System.out.println(getIp());
 			setIp(getIp() + 1);
 			switch(programMemory.get(getIp() - 1).getName().toLowerCase()){
 				case "read":
@@ -54,8 +53,7 @@ public class Alu {
 						read(programMemory.get(getIp() - 1).getArgument());
 					}
 					catch(Exception e){
-						System.err.println(e + mensajeError());
-						System.exit(-1);
+						throw new Exception(e + mensajeError());
 					}
 					break;
 				case "load":
@@ -63,8 +61,7 @@ public class Alu {
 						load(programMemory.get(getIp() - 1).getArgument());
 					}
 					catch(Exception e){
-						System.err.println(e + mensajeError());
-						System.exit(-1);
+						throw new Exception(e + mensajeError());
 					}
 					break;
 				case "store":
@@ -72,8 +69,7 @@ public class Alu {
 						store(programMemory.get(getIp() - 1).getArgument());
 					}
 					catch(Exception e){
-						System.err.println(e + mensajeError());
-						System.exit(-1);
+						throw new Exception(e + mensajeError());		
 					}
 					break;
 				case "jzero":
@@ -81,8 +77,7 @@ public class Alu {
 						jzero(programMemory.get(getIp() - 1).getArgument());
 					}
 					catch(Exception e){
-						System.err.println(e + mensajeError());
-						System.exit(-1);
+						throw new Exception(e + mensajeError());
 					}
 					break;
 				case "write":
@@ -90,8 +85,7 @@ public class Alu {
 						write(programMemory.get(getIp() - 1).getArgument());
 					}
 					catch(Exception e){
-						System.err.println(e + mensajeError());
-						System.exit(-1);
+						throw new Exception(e + mensajeError());
 					}		
 					break;
 				case "add":
@@ -99,8 +93,7 @@ public class Alu {
 						add(programMemory.get(getIp() - 1).getArgument());
 					}
 					catch(Exception e){
-						System.err.println(e + mensajeError());
-						System.exit(-1);
+						throw new Exception(e + mensajeError());
 					}
 					break;
 				case "sub":
@@ -108,8 +101,7 @@ public class Alu {
 						sub(programMemory.get(getIp() - 1).getArgument());
 					}
 					catch(Exception e){
-						System.err.println(e + mensajeError());
-						System.exit(-1);
+						throw new Exception(e + mensajeError());
 					}
 					break;
 				case "mul":
@@ -117,8 +109,7 @@ public class Alu {
 						mul(programMemory.get(getIp() - 1).getArgument());
 					}
 					catch(Exception e){
-						System.err.println(e + mensajeError());
-						System.exit(-1);
+						throw new Exception(e + mensajeError());
 					}
 					break;
 				case "div":
@@ -126,8 +117,7 @@ public class Alu {
 						div(programMemory.get(getIp() - 1).getArgument());
 					}
 					catch(Exception e){
-						System.err.println(e + mensajeError());
-						System.exit(-1);
+						throw new Exception(e + mensajeError());
 					}
 					break;
 				case "jgtz":
@@ -135,8 +125,7 @@ public class Alu {
 						jgtz(programMemory.get(getIp() - 1).getArgument());
 					}
 					catch(Exception e){
-						System.err.println(e + mensajeError());
-						System.exit(-1);
+						throw new Exception(e + mensajeError());
 					}
 					break;
 				case "jump":
@@ -144,17 +133,14 @@ public class Alu {
 						jump(programMemory.get(getIp() - 1).getArgument());
 					}
 					catch(Exception e){
-						System.err.println(e + mensajeError());
-						System.exit(-1);
+						throw new Exception(e + mensajeError());
 					}
 					break;
 				case "halt":
 					boolHalt = true;
 					break;
 				default:
-					System.out.println("Instrucción inválida");
-					boolHalt = true;
-					break;
+					throw new Exception("Error " + mensajeError());
 				}
 			
 			
@@ -167,9 +153,7 @@ public class Alu {
 			throw new Exception("Error. Constante no permitida ");
 		}
 		
-		System.out.println("GOLA");
 		getDataMemory().add(getRegisterNumber(argument), getTapeIn().read());
-		System.out.println("HOLA");
 	}
 	
 	public void load(String argument) throws Exception{
@@ -199,8 +183,7 @@ public class Alu {
 	}
 	
 	public void write(String argument) throws Exception{
-		
-		System.out.println("Argument:" + argument);
+
 		if(!getType(argument).equals("Constante")){
 			
 			if (getRegisterNumber(argument).equals(0)){
@@ -286,7 +269,6 @@ public class Alu {
 	
 	
 	public Integer getValue(String argument) throws Exception{
-		System.out.println("GetValue: " + argument);
 		if(argument.startsWith("=")){
 			try{
 				new Integer(argument.replaceFirst("=", ""));

@@ -31,25 +31,29 @@ public class RamSimulator {
 		outFilename = args[2];
 		tapeIn = new Tape(inFilename);
 		tapeOut = new Tape();
+
 		
-		 
-		
-		loadProgram ();
-		alu = new Alu(tapeIn, tapeOut, programMemory, dataMemory, tagList);
-		alu.start();
+		try{
+			loadProgram();
+			alu = new Alu(tapeIn, tapeOut, programMemory, dataMemory, tagList);
+			alu.start();
+		}
+		catch (Exception e){
+			System.err.println(e);
+			tapeOut.write(outFilename);
+			System.exit(-1);
+		}
 		tapeOut.write(outFilename);
 		System.out.println("Programa finalizado.");
 	}
 	
-	public static void loadProgram(){
+	public static void loadProgram() throws Exception{
 		
 		Integer instructionNumber = 0; 
 		
 		try {
 			Scanner scanner = new Scanner(new File(ramProgram));
 			while (scanner.hasNext()){
-				//int i = scanner.nextInt();
-				
 				String next = scanner.nextLine();
 				next = next.trim();
 				String [] array = next.split("\\s+");
@@ -64,9 +68,8 @@ public class RamSimulator {
 						
 						switch (array.length){
 							case 1:
-								System.out.println("Error en la etiqueta:" + array[0] + ". Línea: " + getLine(next));
-								tapeOut.write(outFilename);
-								break;
+								throw new Exception("Error en la etiqueta:" + array[0] + ". Línea: " + getLine(next));
+								
 							case 2:
 								programMemory.add(new Instruction(array[1], "", getLine(next)));
 								break;
@@ -75,9 +78,8 @@ public class RamSimulator {
 								break;
 			
 							default:
-								System.out.println("Error en la instrucción: " + array[1] + ". Línea: " + getLine(next));
-								tapeOut.write(outFilename);
-								break;
+								throw new Exception("Error en la instrucción: " + array[0] + ". Línea: " + getLine(next));
+								
 						}		
 					}
 					else{
@@ -90,13 +92,9 @@ public class RamSimulator {
 								programMemory.add(new Instruction(array[0], array[1], getLine(next)));
 								break;
 							default:
-								System.out.println("Error en la instrucción: " + array[1] + ". Línea: " + getLine(next));
-								tapeOut.write(outFilename);
-								break;
+								throw new Exception("Error en la instrucción: " + array[0] + ". Línea: " + getLine(next));
+								
 						}	
-						
-						
-						
 					}
 					
 					instructionNumber++;
