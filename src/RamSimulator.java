@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
+ * The <code>RamSimulator</code> class simulates the behavior of a RAM machine.
  * 
- * 
- * @author Isaac Aiman Salas
- *
+ * @author Isaac Aimán
  */
 public class RamSimulator {
 	
@@ -55,6 +54,9 @@ public class RamSimulator {
 		System.out.println("Programa finalizado.");
 	}
 	
+	/**
+	 * Loads all the instructions into the program memory of the ram simulator.
+	 */
 	public static void loadProgram() throws Exception{
 		
 		Integer instructionNumber = 0; 
@@ -116,6 +118,12 @@ public class RamSimulator {
 		}
 	}
 	
+	/**
+	 * Returns the number of the line
+	 * of the specified line of the input ram program.
+	 * 
+	 * @param line a line of the input ram program.
+	 */
 	public static Integer getLine(String line){
 		try{
 			Scanner scanner = new Scanner(new File(ramProgram));

@@ -1,5 +1,10 @@
 import java.util.ArrayList;
-
+/**
+ * The <code>Alu</code> class implements the arithmetic logic unit of a RAM machine.
+ * 
+ * 
+ * @author Isaac Aimán
+ */
 public class Alu {
 	
 	private Integer ip;
@@ -11,6 +16,10 @@ public class Alu {
 	private Integer numberInstructionsExecuted;
 	private Boolean debug;
 	
+	/**
+	 *Initializes a newly created <code>Alu</code> object that represents a RAM Machine's ALU.
+	 * 
+	 */
 	public Alu(){
 
 		ip = 0;
@@ -22,7 +31,17 @@ public class Alu {
 		debug = new Boolean(false); 
 		
 	}
-	
+	/**
+	 *Constructs a new <code>Alu</code> given all the specified components.
+	 * 
+	 * @param tapeIn input tape.
+	 * @param tapeOut output tape.
+	 * @param programMemory program memory used by the ALU.
+	 * @param dataMemory data memory used by the ALU.
+	 * @param tagList contains all the tags of the current program.
+	 * @param debug specifies the debug mode if it's <code>true</code>, otherwise debug mode will be disabled.
+	 * 
+	 */
 	public Alu(Tape tapeIn, Tape tapeOut, ProgramMemory programMemory, DataMemory dataMemory, ArrayList<Tag> tagList, Boolean debug){
 
 		ip = 0;
@@ -35,6 +54,11 @@ public class Alu {
 		
 	}
 	
+	/**
+	 * Initializes a newly created <code>Alu</code> object that represents 
+	 * a copy of the given <code>Alu</code> object.
+	 * 
+	 */
 	public Alu(Alu other){
 		
 		ip = other.getIp();
@@ -47,6 +71,10 @@ public class Alu {
 		
 	}
 	
+	/**
+	 * Starts executing all the instructions of the data program.
+	 * 
+	 */
 	public void start() throws Exception{
 		
 		Boolean boolHalt = false;

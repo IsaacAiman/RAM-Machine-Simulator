@@ -6,11 +6,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * The <code>Tape</code> class implements a RAM machine's tape.
+ * 
+ * @author Isaac Aimán
+ */
 public class Tape {
 	
 	private ArrayList<Integer> tape;
 	
-
+	/**
+	 *Initializes a newly created <code>Tape</code> object 
+	 *that represents a RAM machine's tape.
+	 * 
+	 */
 	public Tape(){
 		
 		Integer cero = new Integer(0);
@@ -18,7 +27,11 @@ public class Tape {
 
 	}
 	
-
+	/**
+	 *Constructs a new <code>Tape</code> given the name of the file
+	 *in which it is stored.
+	 * 
+	 */
 	public Tape(String filename){
 		
 		Integer cero = new Integer(0);
@@ -27,6 +40,11 @@ public class Tape {
 		
 	}
 	
+	/**
+	 * Initializes a newly created <code>Tape</code> object that represents 
+	 * a copy of the given <code>Tape</code> object.
+	 * 
+	 */
 	public Tape (Tape tape2){
 		
 		Integer cero = new Integer(0);
@@ -43,7 +61,11 @@ public class Tape {
 		this.tape = tape;
 	}
 	
-	
+	/**
+	 * Loads the content of the tape given the name of the file
+	 *in which it is stored.
+	 * 
+	 */
 	public void load(String filename){
 		
 		try {
@@ -60,6 +82,10 @@ public class Tape {
 		}	
 	}
 	
+	/**
+	 * Reads the content of the tape in order.
+	 * 
+	 */
 	public Integer read(){
 		
 
@@ -70,6 +96,10 @@ public class Tape {
 			
 	}
 	
+	/**
+	 * Writes the content of the tape in a file with the specified name.
+	 * 
+	 */
 	public void write(String filename){
 
 		BufferedWriter buffer = null;
@@ -89,6 +119,10 @@ public class Tape {
 		}
 	}
 	
+	/**
+	 * Adds a new value to the tape.
+	 * 
+	 */
 	public void add(Integer value){
 		
 		tape.add(value);
