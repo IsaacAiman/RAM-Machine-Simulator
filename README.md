@@ -31,4 +31,4 @@ java RamSimulator test1.ram inTape.in outTape.out 0
 
 ## Documentation
 
-You can find all the code documentation following this link: https://alu0100841565.github.io/RAM-Machine/index.html
+You can find all the code documentation following this [link](https://alu0100841565.github.io/RAM-Machine-Simulator/).
